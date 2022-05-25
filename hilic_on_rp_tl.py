@@ -76,12 +76,13 @@ split = 0.
 for i in range(19):
     split += 0.05
 
-    for j in range(30):
+    for j in range(20):
 
         train_set, test_set = train_test_split(hilic_data, test_size=round(split,2))#, random_state=42)    
         hilic_X, hilic_tstX = standardize2(train_set[:,:-1],test_set[:,:-1])
-        hilic_Y             = train_set[:,-1]
-        hilic_tstY          = test_set[:,-1]
+        # multiplied y (rt values) by 60 to convert them into second in order to be compatible with rp data
+        hilic_Y             = train_set[:,-1]*60
+        hilic_tstY          = test_set[:,-1]*60
         
         rp_model    = keras.models.load_model("nn_rp_15.h5")
         hilic_on_rp = keras.models.Sequential(rp_model.layers[:-1])
@@ -114,11 +115,6 @@ for i in range(19):
         r2_val_file.write("{:2}{:15.6f} \n".format(j,rval_tcn))
         r2_val_file.close()
     
-
-#    e = nn_tal.predict(tal_X)/60.
-#    f = np.reshape(tal_Y,(60026,1))/60.
-#    slope_cn, intcept_cn, rval_cn, pval_cn, stderr_cn= stats.mstats.linregress(e,f)
-#    p_val_file.write("{:2}{:15.6f}".format(i,pval_cn))
 
 #x_cn = range(0,30)
 #y_cn = slope_cn * x_cn + intcept_cn
