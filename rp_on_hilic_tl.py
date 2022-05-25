@@ -108,19 +108,14 @@ for i in range(19):
     
         nY = int(str(rp_Y.shape).replace('(','').replace(')','').replace(',',''))
     
-        a = rp_on_hilic.predict(rp_X)
-        b = np.reshape(rp_Y,(nY,1))
+        a = rp_on_hilic.predict(rp_X)/60
+        b = np.reshape(rp_Y,(nY,1))/60
         slope_tcn, intcept_tcn, rval_tcn, pval_tcn, stderr_tcn= stats.mstats.linregress(a,b)
         r2=f"rp_on_hilic_{round(split,2)}.txt"
         r2_val_file = open(r2,'a')
         r2_val_file.write("{:2}{:15.6f} \n".format(j,rval_tcn))
         r2_val_file.close()
     
-
-#    e = nn_tal.predict(tal_X)/60.
-#    f = np.reshape(tal_Y,(60026,1))/60.
-#    slope_cn, intcept_cn, rval_cn, pval_cn, stderr_cn= stats.mstats.linregress(e,f)
-#    p_val_file.write("{:2}{:15.6f}".format(i,pval_cn))
 
 #x_cn = range(0,30)
 #y_cn = slope_cn * x_cn + intcept_cn
